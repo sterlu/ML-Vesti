@@ -1,9 +1,9 @@
 const fetch = require('node-fetch');
 const fs = require('fs')
 
-const _isUpper = str => str && str.replace('j', 'J').replace('ž', 'Ž').replace('i', 'I') === str.toUpperCase();
-const _isNumber = str => str && (new RegExp(/^[\d.,$€]+$/).test(str))
-const isHype = str => str && (_isNumber(str) || _isUpper(str))
+const _isUpper = str => str.replace('j', 'J').replace('ž', 'Ž').replace('i', 'I') === str.toUpperCase();
+const _isNumber = str => (new RegExp(/^[\d.,$€]+$/).test(str))
+const isHype = str => !str || (_isNumber(str) || _isUpper(str))
 
 if (process.argv.length < 3)
   throw new Error('usage: node scrapefeed link');
@@ -18,12 +18,14 @@ const scrapeNews = async (continuation = '') => {
         + `&continuation=${continuation}`
     );
     const data = await response.json();
-    console.log('fetched ' + data.items.length);
-    console.log('continue from ', data.continuation);
+    // console.log('fetched ' + data.items.length);
+    // console.log('continue from ', data.continuatison);
+    console.log('... ', data.items.length, data.continuation);
     const parsed = data.items.map(({id, title, summary, originId, published}) => {
       let _title = title.split(' ');
+      // console.log(_title);
       let hypeTitle = '';
-      while (isHype(_title[0]) && !(_title[0].length === 1 && !isHype(_title[1]))) {
+      while (_title.length && isHype(_title[0]) && !(_title[0].length === 1 && !isHype(_title[1]))) {
         hypeTitle += _title[0] + ' ';
         _title = _title.slice(1);
       }
@@ -37,6 +39,7 @@ const scrapeNews = async (continuation = '') => {
     if (data.continuation) scrapeNews(data.continuation);
   } catch (e) {
     if (e.message.includes('invalid json response')) scrapeNews(continuation);
+    else console.error(e);
   }
 };
 
