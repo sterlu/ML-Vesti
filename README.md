@@ -20,6 +20,10 @@ informacionih portala, ali koristeći modernije pristupe od RNN-ova.
 Konkretno isprobano je prilagođavanje istreniranih GPT2 modela nad domaćim
 naslovima. 
 
+Od literature, primarno je korišćena [HuggingFace dokumentacija](https://huggingface.co/transformers/),
+uz dodatne članke raznih autora na internetu. [Skripta predmeta](http://ml.matf.bg.ac.rs/readings/ml.pdf)
+je naravno poslužila kao teorijska osnova. 
+
 ## Tehnički osvrt
 
 ### Skup podataka
@@ -71,7 +75,7 @@ Veća onlajn prodaja donela je i više krivotvorene robe, a evo i gde je u Evrop
 ...
 ```
 
-### Tokenizocija
+### Tokenizacija
 
 - Pri treniranju GPT2, korišćena je byte-level BPE tokenizacija. Pre nego 
   što prihvatimo to kao podrazumevan način enkodovanja, zapitajmo se da 
@@ -90,7 +94,16 @@ Veća onlajn prodaja donela je i više krivotvorene robe, a evo i gde je u Evrop
 
 ### Modeli
 
-- TODO GPT2 i distilgpt2 ukratko
+- Model se bavi prilagođavanjem (_fine-tuning_) postojećih modela GPT2
+  arhitekture. GPT2 je model baziran na transformerskoj arhitekturi, 
+  nenadgledano treniran na velikoj količini teksta, sposoban da generiše
+  eseje koji zvuče prirodno.
+  
+- Pri treniranju korišćena je najmanja varijanta GPT2 modela. Postoji i 
+  DistillGPT2 model (destilovan GPT2) koji obećava slične performanse kao
+  GPT2 za manje resursa - brže treniranje, generisanje i manji model. 
+  Međutim, rezultati sa DistillGPT2 nisu bili idealni, pa je fokus ipak 
+  prebačen na originalni GPT2 model.
 
 ## Rezultati
 
@@ -117,7 +130,6 @@ Nakon ŽESTOKE svađe sa Borom PEVAČICOM, ONA je jedna stvar za to!
 me, nije ni znao gde će!
 Ovo je pet albuma koje bi trebalo da preslušate danas ( FOTO )
 ```
-
 
 
 ## Dodatak: Zaključci iz treniranja
